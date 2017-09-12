@@ -26,9 +26,11 @@ class AnnotationInline(admin.StackedInline):
 
 class DescriptorForm(admin.ModelAdmin):
     # list_display = ('id_mesh','id_decs')
+    list_display = ('descriptor_en','descriptor_es_la','descriptor_pt','descriptor_es_sp','descriptor_fr')
 
     # fields = ('id_mesh','id_decs')
 
+    '''
     fieldsets = (
         (None, {
             'fields':('id_mesh','id_decs','descriptor_pt')
@@ -38,7 +40,7 @@ class DescriptorForm(admin.ModelAdmin):
             'fields': ('descriptor_en','descriptor_es_la','descriptor_es_sp','descriptor_fr'),
         }),
     )
-
+    '''
 
     form = DescriptorForm
 
@@ -49,7 +51,7 @@ class DescriptorForm(admin.ModelAdmin):
         AnnotationInline,
     ]
 
-    search_fields = [ 'id_mesh','descriptor_pt' ]
+    search_fields = [ 'id_mesh','id_decs','descriptor_pt','descriptor_en','descriptor_es_la','descriptor_es_sp','descriptor_fr' ]
 
 
 admin.site.register(Descriptor, DescriptorForm)
