@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 # Descriptor fields
 class Descriptor(models.Model):
 
-    active_descriptor = models.BooleanField( u'Ativo', default=True, help_text=u'Marque para definir o Descritor como ativo.' )
+    active_descriptor = models.BooleanField( u'Ativo', default=False, help_text=u'Marque para definir o Descritor como ativo.' )
     # field tag 1
     descriptor_en = models.CharField( u'Inglês', max_length=200, null=True, blank=True )
 
@@ -82,7 +82,7 @@ class Annotation(models.Model):
     # field tag not exist before
     annotation_fr = models.TextField( u'Francês', max_length=200, null=True, blank=True )
 
-    id_annotation = models.OneToOneField(Descriptor)
+    id_annotation = models.ForeignKey(Descriptor)
 
     class Meta:
         verbose_name = u'Nota de Indexação'
@@ -92,6 +92,47 @@ class Annotation(models.Model):
         return '%s' % (self.id)
 
 
+# Synonym
+class Synonym(models.Model):
+
+    # v50^i
+    synonym_en = models.CharField( u'Inglês', max_length=200, null=True, blank=True )
+
+    # v50^e
+    synonym_es_la = models.CharField( u'Espanhol', max_length=200, null=True, blank=True )
+
+    # v50^p
+    synonym_pt = models.CharField( u'Portugês', max_length=200, null=True, blank=True )
+
+    # v50^s
+    synonym_es_sp = models.CharField( u'Espanhol - Espanha', max_length=200, null=True, blank=True )
+
+    # field tag not exist before
+    synonym_fr = models.CharField( u'Francês', max_length=200, null=True, blank=True )
+
+    id_synonym = models.ForeignKey(Descriptor)
+
+    class Meta:
+        verbose_name = u'Sinônimo'
+        verbose_name_plural = u'Sinônimos'
+
+    def __unicode__(self): # informação que retornará
+        return '%s' % (self.id)
 
 
+
+# Non-Print Entry Term
+class NonPrintEntryTerm(models.Model):
+
+    # v23^i
+    npe_en = models.CharField( u'Inglês', max_length=200, null=True, blank=True )
+
+    id_npe = models.ForeignKey(Descriptor)
+
+    class Meta:
+        verbose_name = u'Non-Print Entry Term'
+        verbose_name_plural = u'Non-Print Entry Terms'
+
+    def __unicode__(self): # informação que retornará
+        return '%s' % (self.id)
 

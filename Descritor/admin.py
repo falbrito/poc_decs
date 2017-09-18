@@ -5,7 +5,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from Descritor.models import Descriptor, ScopeNote, Annotation
+from Descritor.models import Descriptor, ScopeNote, Annotation, Synonym, NonPrintEntryTerm
 from Descritor.forms import DescriptorForm
 
 
@@ -25,6 +25,17 @@ class AnnotationInline(admin.StackedInline):
     model = Annotation
     classes = ['collapse']
 
+class SynonymInline(admin.StackedInline):
+
+    model = Synonym
+    extra = 1
+    classes = ['collapse']
+
+class NonPrintEntryTermInline(admin.StackedInline):
+
+    model = NonPrintEntryTerm
+    extra = 1
+    classes = ['collapse']
 
 class DescriptorForm(admin.ModelAdmin):
 
@@ -38,6 +49,8 @@ class DescriptorForm(admin.ModelAdmin):
 
         ScopeNoteInline,
         AnnotationInline,
+        SynonymInline,
+        NonPrintEntryTermInline,        
     ]
 
     search_fields = [ 'id_mesh','id_decs','descriptor_pt','descriptor_en','descriptor_es_la','descriptor_es_sp','descriptor_fr' ]
