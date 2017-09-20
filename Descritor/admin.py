@@ -5,7 +5,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from Descritor.models import Descriptor, TreeNumbersForDescriptors, NonPrintEntryTerm, ScopeNote, Annotation, Synonym
+from Descritor.models import Descriptor, TreeNumbersForDescriptors, NonPrintEntryTerm, ScopeNote, Annotation, Synonym, RegisterType
 from Descritor.forms import DescriptorForm
 
 
@@ -13,6 +13,11 @@ from Descritor.forms import DescriptorForm
 # # usando TabularInline
 # class PtInline(admin.TabularInline):
 #     model = Pt
+
+class RegisterTypeInline(admin.StackedInline):
+
+    model = RegisterType
+    classes = ['collapse']
 
 
 class TreeNumbersForDescriptorsInline(admin.StackedInline):
@@ -66,6 +71,7 @@ class DescriptorForm(admin.ModelAdmin):
     # Incluindo o formulario de Descriptor
     inlines = [
 
+        RegisterTypeInline,
         TreeNumbersForDescriptorsInline,
         NonPrintEntryTermInline,        
         ScopeNoteInline,

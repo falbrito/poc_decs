@@ -35,6 +35,37 @@ class Descriptor(models.Model):
         return '%s' % (self.descriptor_pt)
 
 
+
+# Register type - v105 and v106
+class RegisterType(models.Model):
+    
+    RECORD_TYPE_CHOICES = (
+                            ('H','H'),('Q','Q'),('T','T')
+                        )
+    # DESCRIPTOR_TYPE_CHOICES = ('c','d','f','g','h','l','n','p','r','s','x')
+
+    # v105
+    record_type = models.CharField( u'Tipo de Registro', 
+                                    max_length=1, 
+                                    choices=RECORD_TYPE_CHOICES, 
+                                    null=True, 
+                                    blank=True
+                                )
+
+    # v106
+    descriptor_type = models.CharField( u'Tipo de Descritor', max_length=1, null=True, blank=True)
+
+    id_register_type = models.OneToOneField(Descriptor)
+
+    class Meta:
+        verbose_name = u'Tipo'
+        verbose_name_plural = u'Tipos'
+
+    def __unicode__(self): # informação que retornará 
+        return '%s' % (self.id)
+
+
+
 # Tree numbers for descriptors
 class TreeNumbersForDescriptors(models.Model):
 
