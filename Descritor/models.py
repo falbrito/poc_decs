@@ -29,11 +29,26 @@ class Descriptor(models.Model):
         verbose_name_plural = u'Descritores'
         ordering = ['descriptor_pt']
 
-
     def __unicode__(self): # informação que retornará 
         # return '%s %s' % (self.id, self.descriptor_pt)
         # return self.id_mesh
         return '%s' % (self.descriptor_pt)
+
+
+# Tree numbers for descriptors
+class TreeNumbersForDescriptors(models.Model):
+
+    # v20
+    tree_numbers = models.CharField( u'Categoria', max_length=200, null=True, blank=True )
+
+    id_tree_numbers = models.ForeignKey(Descriptor)
+
+    class Meta:
+        verbose_name = u'Tree number for descriptor'
+        verbose_name_plural = u'Tree numbers for descriptors'
+
+    def __unicode__(self): # informação que retornará
+        return '%s' % (self.id)
 
 
 # Scope Note
@@ -68,21 +83,21 @@ class ScopeNote(models.Model):
 class Annotation(models.Model):
 
     # field tag 110
-    annotation_en = models.TextField( u'Inglês', max_length=200, null=True, blank=True )
+    annotation_en = models.TextField( u'Inglês', max_length=1500, null=True, blank=True )
 
     # field tag 210
-    annotation_es_la = models.TextField( u'Espanhol', max_length=200, null=True, blank=True )
+    annotation_es_la = models.TextField( u'Espanhol', max_length=1500, null=True, blank=True )
 
     # field tag 310
-    annotation_pt = models.TextField( u'Portugês', max_length=200, null=True, blank=True )
+    annotation_pt = models.TextField( u'Português', max_length=1500, null=True, blank=True )
 
     # field tag not exist before
-    annotation_es_sp = models.TextField( u'Espanhol - Espanha', max_length=200, null=True, blank=True )
+    annotation_es_sp = models.TextField( u'Espanhol - Espanha', max_length=1500, null=True, blank=True )
 
     # field tag not exist before
-    annotation_fr = models.TextField( u'Francês', max_length=200, null=True, blank=True )
+    annotation_fr = models.TextField( u'Francês', max_length=1500, null=True, blank=True )
 
-    id_annotation = models.ForeignKey(Descriptor)
+    id_annotation = models.OneToOneField(Descriptor)
 
     class Meta:
         verbose_name = u'Nota de Indexação'
@@ -102,7 +117,7 @@ class Synonym(models.Model):
     synonym_es_la = models.CharField( u'Espanhol', max_length=200, null=True, blank=True )
 
     # v50^p
-    synonym_pt = models.CharField( u'Portugês', max_length=200, null=True, blank=True )
+    synonym_pt = models.CharField( u'Português', max_length=200, null=True, blank=True )
 
     # v50^s
     synonym_es_sp = models.CharField( u'Espanhol - Espanha', max_length=200, null=True, blank=True )
@@ -118,7 +133,6 @@ class Synonym(models.Model):
 
     def __unicode__(self): # informação que retornará
         return '%s' % (self.id)
-
 
 
 # Non-Print Entry Term

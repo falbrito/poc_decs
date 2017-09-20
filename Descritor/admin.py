@@ -5,7 +5,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from Descritor.models import Descriptor, ScopeNote, Annotation, Synonym, NonPrintEntryTerm
+from Descritor.models import Descriptor, TreeNumbersForDescriptors, NonPrintEntryTerm, ScopeNote, Annotation, Synonym
 from Descritor.forms import DescriptorForm
 
 
@@ -14,20 +14,10 @@ from Descritor.forms import DescriptorForm
 # class PtInline(admin.TabularInline):
 #     model = Pt
 
-# usando StackedInline
-class ScopeNoteInline(admin.StackedInline):
 
-    model = ScopeNote
-    classes = ['collapse']
+class TreeNumbersForDescriptorsInline(admin.StackedInline):
 
-class AnnotationInline(admin.StackedInline):
-
-    model = Annotation
-    classes = ['collapse']
-
-class SynonymInline(admin.StackedInline):
-
-    model = Synonym
+    model = TreeNumbersForDescriptors
     extra = 1
     classes = ['collapse']
 
@@ -37,9 +27,38 @@ class NonPrintEntryTermInline(admin.StackedInline):
     extra = 1
     classes = ['collapse']
 
+# usando StackedInline
+class ScopeNoteInline(admin.StackedInline):
+
+    model = ScopeNote
+    extra = 0
+    classes = ['collapse']
+
+
+class AnnotationInline(admin.StackedInline):
+
+    model = Annotation
+    extra = 0
+    classes = ['collapse']
+
+
+class SynonymInline(admin.StackedInline):
+
+    model = Synonym
+    extra = 1
+    classes = ['collapse']
+
+
 class DescriptorForm(admin.ModelAdmin):
 
-    list_display = ('descriptor_en','descriptor_es_la','descriptor_pt','descriptor_es_sp','descriptor_fr','active_descriptor')
+    list_display = (
+                    'active_descriptor',
+                    'descriptor_en',
+                    'descriptor_es_la',
+                    'descriptor_pt',
+                    'descriptor_es_sp',
+                    'descriptor_fr'
+                    )
 
     form = DescriptorForm
 
@@ -47,13 +66,23 @@ class DescriptorForm(admin.ModelAdmin):
     # Incluindo o formulario de Descriptor
     inlines = [
 
+        TreeNumbersForDescriptorsInline,
+        NonPrintEntryTermInline,        
         ScopeNoteInline,
         AnnotationInline,
         SynonymInline,
-        NonPrintEntryTermInline,        
+    
     ]
 
-    search_fields = [ 'id_mesh','id_decs','descriptor_pt','descriptor_en','descriptor_es_la','descriptor_es_sp','descriptor_fr' ]
+    search_fields = [ 
+                    'id_mesh',
+                    'id_decs',
+                    'descriptor_pt',
+                    'descriptor_en',
+                    'descriptor_es_la',
+                    'descriptor_es_sp',
+                    'descriptor_fr'
+                    ]
 
 
 admin.site.register(Descriptor, DescriptorForm)
