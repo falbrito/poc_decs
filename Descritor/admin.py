@@ -5,7 +5,19 @@ from django.contrib import admin
 
 # Register your models here.
 
-from Descritor.models import Descriptor, TreeNumbersForDescriptors, NonPrintEntryTerm, ScopeNote, Annotation, Synonym, RegisterType
+from Descritor.models import *
+
+'''
+Descriptor, 
+TreeNumbersForDescriptors, 
+NonPrintEntryTermScopeNote, 
+Annotation, 
+Synonym, 
+RegisterType, 
+OnlineNote, 
+HistoryNote
+'''
+
 from Descritor.forms import DescriptorForm
 
 
@@ -54,6 +66,20 @@ class SynonymInline(admin.StackedInline):
     classes = ['collapse']
 
 
+class OnlineNoteInline(admin.StackedInline):
+
+    model = OnlineNote
+    extra = 0
+    classes = ['collapse']
+
+
+class HistoryNoteInline(admin.StackedInline):
+
+    model = HistoryNote
+    extra = 0
+    classes = ['collapse']
+
+
 class DescriptorForm(admin.ModelAdmin):
 
     list_display = (
@@ -73,10 +99,12 @@ class DescriptorForm(admin.ModelAdmin):
 
         RegisterTypeInline,
         TreeNumbersForDescriptorsInline,
-        NonPrintEntryTermInline,        
         ScopeNoteInline,
         AnnotationInline,
         SynonymInline,
+        NonPrintEntryTermInline,
+        OnlineNoteInline,
+        HistoryNoteInline,   
     
     ]
 

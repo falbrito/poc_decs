@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from multiselectfield import MultiSelectField
 
 
 # Descriptor fields
@@ -40,10 +41,8 @@ class Descriptor(models.Model):
 class RegisterType(models.Model):
     
     RECORD_TYPE_CHOICES = (
-                            ('H','H'),('Q','Q'),('T','T')
+                            ('H','Heading'),('Q','Qualificador'),('T','Tipo de Publicação')
                         )
-    # DESCRIPTOR_TYPE_CHOICES = ('c','d','f','g','h','l','n','p','r','s','x')
-
     # v105
     record_type = models.CharField( u'Tipo de Registro', 
                                     max_length=1, 
@@ -52,8 +51,23 @@ class RegisterType(models.Model):
                                     blank=True
                                 )
 
+    DESCRIPTOR_TYPE_CHOICES = (
+                                ('m','MeSH'),
+                                ('s','Saúde Pública'),
+                                ('p','Homeopatia'),
+                                ('f','Reforma Saúde'),
+                                ('r','REPIDISCA'),
+                                ('n','Não indexável'),
+                                ('c','Pré-codificado'),
+                                ('x','Exploded'),
+                                ('g','Geográfico'),
+                                ('z','Geo. DeCS'),
+                                ('l','PT LILACS'),
+                                ('d','Desastre'),
+        )
+
     # v106
-    descriptor_type = models.CharField( u'Tipo de Descritor', max_length=1, null=True, blank=True)
+    descriptor_type = MultiSelectField( u'Tipo de Descritor',choices=DESCRIPTOR_TYPE_CHOICES, max_length=1, null=True, blank=True)
 
     id_register_type = models.OneToOneField(Descriptor)
 
@@ -181,3 +195,46 @@ class NonPrintEntryTerm(models.Model):
     def __unicode__(self): # informação que retornará
         return '%s' % (self.id)
 
+
+
+class OnlineNote(models.Model):
+
+    # v117 - en
+    online_note_en = models.TextField( u'Inglês', max_length=1500, null=True, blank=True )
+
+    # v217 - es
+    online_note_es_la = models.TextField( u'Espanhol', max_length=1500, null=True, blank=True )
+
+    # v317 - pt
+    online_note_pt = models.TextField( u'Português', max_length=1500, null=True, blank=True )
+
+    id_online_note = models.OneToOneField(Descriptor)
+
+    class Meta:
+        verbose_name = u'Nota Online'
+        verbose_name_plural = u'Notas Online'
+
+    def __unicode__(self): # informação que retornará
+        return '%s' % (self.id)
+
+
+
+class HistoryNote(models.Model):
+
+    # v119 - en
+    history_note_en = models.TextField( u'Inglês', max_length=1500, null=True, blank=True )
+
+    # v219 - es
+    history_note_es_la = models.TextField( u'Espanhol', max_length=1500, null=True, blank=True )
+
+    # v319 - pt
+    history_note_pt = models.TextField( u'Português', max_length=1500, null=True, blank=True )
+
+    id_history_note = models.OneToOneField(Descriptor)
+
+    class Meta:
+        verbose_name = u'Nota Histórica'
+        verbose_name_plural = u'Notas Históricas'
+
+    def __unicode__(self): # informação que retornará
+        return '%s' % (self.id)
