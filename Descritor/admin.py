@@ -9,13 +9,15 @@ from Descritor.models import *
 
 '''
 Descriptor, 
+UniqueIdentifier,
 TreeNumbersForDescriptors, 
 NonPrintEntryTermScopeNote, 
 Annotation, 
 Synonym, 
 RegisterType, 
 OnlineNote, 
-HistoryNote
+HistoryNote,
+AllowedQualifiers
 '''
 
 from Descritor.forms import DescriptorForm
@@ -25,6 +27,12 @@ from Descritor.forms import DescriptorForm
 # # usando TabularInline
 # class PtInline(admin.TabularInline):
 #     model = Pt
+
+class UniqueIdentifierInline(admin.TabularInline):
+
+    model = UniqueIdentifier
+    classes = ['collapse']
+
 
 class RegisterTypeInline(admin.StackedInline):
 
@@ -80,15 +88,22 @@ class HistoryNoteInline(admin.StackedInline):
     classes = ['collapse']
 
 
+class AllowedQualifiersInline(admin.StackedInline):
+
+    model = AllowedQualifiers
+    extra = 0
+    classes = ['collapse']
+
+
 class DescriptorForm(admin.ModelAdmin):
 
     list_display = (
-                    'active_descriptor',
                     'descriptor_en',
                     'descriptor_es_la',
                     'descriptor_pt',
                     'descriptor_es_sp',
-                    'descriptor_fr'
+                    'descriptor_fr',
+                    'active_descriptor',
                     )
 
     form = DescriptorForm
@@ -97,6 +112,7 @@ class DescriptorForm(admin.ModelAdmin):
     # Incluindo o formulario de Descriptor
     inlines = [
 
+        UniqueIdentifierInline,
         RegisterTypeInline,
         TreeNumbersForDescriptorsInline,
         ScopeNoteInline,
@@ -105,6 +121,7 @@ class DescriptorForm(admin.ModelAdmin):
         NonPrintEntryTermInline,
         OnlineNoteInline,
         HistoryNoteInline,   
+        AllowedQualifiersInline,
     
     ]
 

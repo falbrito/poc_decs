@@ -9,7 +9,6 @@ from multiselectfield import MultiSelectField
 # Descriptor fields
 class Descriptor(models.Model):
 
-    active_descriptor = models.BooleanField( u'Ativo', default=False, help_text=u'Marque para definir o Descritor como ativo.' )
     # field tag 1
     descriptor_en = models.CharField( u'Inglês', max_length=200, null=True, blank=True )
 
@@ -25,6 +24,8 @@ class Descriptor(models.Model):
     # filed tag 16
     descriptor_fr = models.CharField( u'Francês', max_length=200, null=True, blank=True )
 
+    active_descriptor = models.BooleanField( u'Ativo', default=False, help_text=u'Marque para definir o Descritor como ativo.' )
+
     class Meta:
         verbose_name = u'Descritor'
         verbose_name_plural = u'Descritores'
@@ -34,6 +35,24 @@ class Descriptor(models.Model):
         # return '%s %s' % (self.id, self.descriptor_pt)
         # return self.id_mesh
         return '%s' % (self.descriptor_pt)
+
+
+class UniqueIdentifier(models.Model):
+
+    # field tag 99 or 999
+    id_decs = models.CharField( u'Identificador DeCS', max_length=20, null=True, blank=True )
+
+    # field tag 480
+    id_mesh = models.CharField( u'Identificador MESH', max_length=20, null=True, blank=True )
+
+    id_unique_identifier = models.OneToOneField(Descriptor)
+
+    class Meta:
+        verbose_name = u'Número Identificador'
+        verbose_name_plural = u'Números Identificadores'
+
+    def __unicode__(self): # informação que retornará 
+        return '%s' % (self.id)
 
 
 
@@ -67,7 +86,7 @@ class RegisterType(models.Model):
         )
 
     # v106
-    descriptor_type = MultiSelectField( u'Tipo de Descritor',choices=DESCRIPTOR_TYPE_CHOICES, max_length=1, null=True, blank=True)
+    descriptor_type = MultiSelectField( u'Tipo de Descritor',choices=DESCRIPTOR_TYPE_CHOICES, max_length=50, null=True, blank=True)
 
     id_register_type = models.OneToOneField(Descriptor)
 
@@ -109,7 +128,7 @@ class ScopeNote(models.Model):
     scope_note_pt = models.TextField( u'Português', max_length=3000, null=True, blank=True )
 
     # field tag 8
-    scope_note_es_sp = models.TextField( u'Espanhol', max_length=3000, null=True, blank=True )
+    scope_note_es_sp = models.TextField( u'Espanhol - Espanha', max_length=3000, null=True, blank=True )
 
     # field tag not exist before
     scope_note_fr = models.TextField( u'Francês', max_length=3000, null=True, blank=True )
@@ -238,3 +257,17 @@ class HistoryNote(models.Model):
 
     def __unicode__(self): # informação que retornará
         return '%s' % (self.id)
+
+class AllowedQualifiers(models.Model):
+
+    # v950
+    allowed_qualifier = models.TextField( u'Qualificador permitido', max_length=200, null=True, blank=True )
+
+    id_allowed_qualifier = models.OneToOneField(Descriptor)
+
+    class Meta:
+        verbose_name = u'Qualificador Permitido'
+        verbose_name_plural = u'Qaulificadores Permitidos'
+
+    def __unicode__(self): # informação que retornará
+        return '%s' % (self.id)    
